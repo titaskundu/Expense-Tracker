@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
 
-    <div className="App">
+    <div className="App flex">
      <Sidebar/>
      
       <Routes>
