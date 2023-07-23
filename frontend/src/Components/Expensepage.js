@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-
-function Expensepage ()  {
+import Datepicker from "react-tailwindcss-datepicker";
+function Expensepage() {
   // State to track the selected expense type and input details
   const [selectedExpenseType, setSelectedExpenseType] = useState('');
   const [expenseDetails, setExpenseDetails] = useState({
     title: '',
     amount: '',
+    date: '',
+    
+    reference: '',
   });
+  const [value, setValue] = useState({
+    startDate: null ,
+    endDate: null
+  });
+
+  const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue);
+    setValue(newValue);
+  }
 
   // Expense type options
   const expenseTypes = ['Food', 'Transportation', 'Entertainment', 'Other'];
@@ -26,29 +38,30 @@ function Expensepage ()  {
   };
 
   return (
-    <div className="p-4">
+    
+    <div className="p-4 flex flex-col ml-8 ">
+    <h1 className='font-bold text-[50px] flex float-left mt-5	 '>Expenses</h1>
       {/* Total expense display */}
-      <div className="text-xl font-semibold mb-4">Total Expense: $0.00</div>
+    <div className="text-xl font-semibold mb-4 mt-2 pt-4 pb-4 bg-blue-300 rounded-lg">Total Expense: $0.00</div>
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4">
         {/* First column: Expense type selection */}
-        <div>
+        {/* <div>
           <div className="text-lg font-semibold mb-2">Select Expense Type:</div>
           {expenseTypes.map((expenseType) => (
             <button
               key={expenseType}
               onClick={() => handleExpenseTypeSelect(expenseType)}
-              className={`px-4 py-2 rounded-lg ${
-                selectedExpenseType === expenseType
+              className={`px-4 py-2 rounded-lg ${selectedExpenseType === expenseType
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-300 text-black'
-              }`}
+                }`}
             >
               {expenseType}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Second column: Input details */}
         <div>
@@ -69,6 +82,36 @@ function Expensepage ()  {
               value={expenseDetails.amount}
               onChange={handleInputChange}
               className="px-4 py-2 w-full border rounded-lg"
+            />
+            <select
+              name="expenseType"
+              value={selectedExpenseType}
+              onChange={handleExpenseTypeSelect}
+              className="px-4 py-2 w-full border rounded-lg"
+            >
+              <option value="">Select an Expense Type</option>
+              {expenseTypes.map((expenseType) => (
+                <option key={expenseType} value={expenseType}>
+                  {expenseType}
+                </option>
+              ))}
+            </select>
+
+            <Datepicker
+              useRange={false}
+              asSingle={true}
+              value={value}
+              onChange={handleValueChange}
+            />
+            <textarea
+              type="text"
+              name="reference"
+              placeholder="Reference"
+              value={expenseDetails.reference}
+              onChange={handleInputChange}
+              className="px-4 py-6 mb-2 w-full border rounded-lg h-[100px]"
+              rows={5}
+              cols={80}
             />
           </div>
           <button
