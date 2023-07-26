@@ -1,94 +1,90 @@
-import React from "react";
-export default function Signup() {
-    return (
-        <div>
-            <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
-                <div>
-                    <a href="/">
-                        <h3 className="text-4xl font-bold text-purple-600">
-                            ExpenseTracker
-                        </h3>
-                    </a>
-                </div>
-                <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
-                    <form>
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700 undefined"
-                            >
-                                Name
-                            </label>
-                            <div className="flex flex-col items-start">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-gray-700 undefined"
-                            >
-                                Email
-                            </label>
-                            <div className="flex flex-col items-start">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <label
-                                htmlFor="password"
-                                className="block text-sm font-medium text-gray-700 undefined"
-                            >
-                                Password
-                            </label>
-                            <div className="flex flex-col items-start">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <label
-                                htmlFor="password_confirmation"
-                                className="block text-sm font-medium text-gray-700 undefined"
-                            >
-                                Confirm Password
-                            </label>
-                            <div className="flex flex-col items-start">
-                                <input
-                                    type="password"
-                                    name="password_confirmation"
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-end mt-4">
-                            <a
-                                className="text-sm text-gray-600 underline hover:text-gray-900"
-                                href="#"
-                            >
-                                Already registered?
-                            </a>
-                            <button
-                                type="submit"
-                                className="inline-flex items-center px-4 py-2 ml-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-900 border border-transparent rounded-md active:bg-gray-900 false"
-                            >
-                                Register
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Form data submitted:', formData);
+    // Add your code here to submit the data to the server or perform any other actions.
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white shadow-md rounded-lg px-8 py-6 w-96">
+        <h2 className="text-2xl font-semibold mb-6">Signup</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700 font-semibold mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+          >
+            Sign Up
+          </button>
+        </form>
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">Already registered?</span>{' '}
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Login
+          </Link>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
+
+export default Signup;
