@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import React, { useEffect, useState } from 'react';
+import { Link ,useNavigate} from 'react-router-dom';
+import axios from 'axios';
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -16,11 +17,25 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form data submitted:', formData);
-    // Add your code here to submit the data to the server or perform any other actions.
+    try {
+        await axios.post("/users/signup",formData)
+        alert("Registration successfull")
+        navigate("/login");
+
+    } catch (error) {
+        alert(`error: ${error}`)
+        
+    }
   };
+  //prevent login
+  
+  useEffect(()=>{
+    if(localStorage.getItem('user')){
+        navigate('/')
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
