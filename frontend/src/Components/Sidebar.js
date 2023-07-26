@@ -1,14 +1,31 @@
-import React from 'react';
-import {Link} from "react-router-dom"
+import React, { useEffect, useState }  from 'react';
+import {Link, useNavigate} from "react-router-dom"
 
 
 function Sidebar  ()  {
+    const [loginUser,setLoginUser] = useState('');
+    useEffect(()=>{
+        const user =JSON.parse(localStorage.getItem('user'))
+        if(user){
+            setLoginUser(user)
+        }
+    },[])
+    const navigate = useNavigate();
+
+    const logoutHandler=()=>{
+       localStorage.removeItem("user")
+       navigate("/login")
+    }
+
     return (
         <div className="flex">
-        <div className="flex flex-col h-screen p-3 bg-white shadow w-60 border-blue-400 border-solid border-x-2 " >
-            <div className="space-y-3">
+        <div className="flex flex-col h-screen p-3 bg-white shadow w-60 border-blue-400 border-solid border-x-2 relative" >
+            <div className="space-y-3 ">
                 <div className="flex items-center">
                     <h2 className=" text-4xl font-bold">Dashboard</h2>
+                </div>
+                <div className=' pt -4'>
+                    <h2>{loginUser && loginUser.name}</h2>
                 </div>
                 <div className="flex-1">
                     <ul className="pt-2 pb-4 space-y-1 text-sm">
@@ -36,7 +53,7 @@ function Sidebar  ()  {
                         </li>
                         <li className="rounded-sm">
                             <Link
-                                to="/"
+                                to="/dashboard"
                                 className="flex items-center p-2 space-x-3 rounded-md"
                             >
                             <svg  className="w-6 h-6"
@@ -93,8 +110,11 @@ function Sidebar  ()  {
                         </li>
                     </ul>
                 </div>
+               
             </div>
+            <button onClick={logoutHandler} className=' absolute bottom-5'>Log out</button>
         </div>
+        
         
     </div>
     );

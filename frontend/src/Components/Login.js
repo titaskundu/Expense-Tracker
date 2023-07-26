@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you have React Router installed and set up
+import React, { useState,useEffect } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
+import axios from 'axios';
+ // Assuming you have React Router installed and set up
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,12 +16,26 @@ const Login = () => {
       [name]: value,
     }));
   };
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form data submitted:', formData);
-    // Add your code here to authenticate the user or perform any other actions.
+    try {
+       const {data} =  await axios.post("/users/login",formData);
+        alert("Login successfull");
+        localStorage.setItem('user',JSON.stringify({...data.user,password:''}))
+        navigate("/");
+
+    } catch (error) {
+        alert("invalid username or password")
+        
+    }
   };
+  useEffect(()=>{
+    if(localStorage.getItem('user')){
+        navigate('/')
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
